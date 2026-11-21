@@ -1,0 +1,3 @@
+package com.veritas.service;
+import com.veritas.model.UserAccount;import com.veritas.repository.UserRepository;import org.springframework.boot.CommandLineRunner;import org.springframework.stereotype.Component;import org.springframework.security.crypto.password.PasswordEncoder;
+@Component public class AccountSeeder implements CommandLineRunner {private final UserRepository repo;private final PasswordEncoder encoder;public AccountSeeder(UserRepository r,PasswordEncoder e){repo=r;encoder=e;}public void run(String... args){String user=System.getenv().getOrDefault("VERITAS_ADMIN_USER","admin");String pass=System.getenv().getOrDefault("VERITAS_ADMIN_PASSWORD","ChangeMe_123!");if(!repo.existsByUsername(user))repo.save(new UserAccount(user,encoder.encode(pass),"ADMIN"));}}

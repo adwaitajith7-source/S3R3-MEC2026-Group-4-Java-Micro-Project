@@ -1,0 +1,11 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><body>
+<nav th:fragment="sidebar(active)" class="sidebar">
+ <a class="brand" href="/"><span class="brandmark">V</span><span>VERITAS<small>PUBLIC SERVICE PORTAL</small></span></a>
+ <div class="navlabel">MENU</div>
+ <a th:classappend="${active=='overview'}?'active':''" href="/citizen/dashboard"><span>▦</span> Overview</a>
+ <a th:classappend="${active=='new'}?'active':''" href="/citizen/complaints/new"><span>＋</span> Submit complaint</a>
+ <a th:classappend="${active=='list'}?'active':''" href="/citizen/complaints"><span>▤</span> My complaints</a>
+ <div class="sidebarbottom"><div class="helpbox"><strong>Need assistance?</strong><p>We're here to help you get things resolved.</p><a href="mailto:support@veritas.local">Contact support ↗</a></div><a href="/logout">↪ Sign out</a></div>
+</nav>
+<header th:fragment="topbar" class="topbar"><button class="menu-toggle" onclick="document.body.classList.toggle('nav-open')">☰</button><div class="crumb">Citizen portal <span>/</span> Dashboard</div><div class="topright"><span class="live-dot"></span> Services online <span class="avatar">C</span></div></header>
+</body></html>

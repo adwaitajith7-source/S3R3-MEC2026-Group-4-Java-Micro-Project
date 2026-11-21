@@ -1,0 +1,7 @@
+package com.veritas.controller;
+import com.veritas.model.Complaint;import com.veritas.repository.ComplaintRepository;import org.springframework.security.core.Authentication;import org.springframework.web.bind.annotation.*;import org.springframework.http.*;import java.util.*;
+@RestController @RequestMapping("/api/complaints") public class ComplaintController {private final ComplaintRepository complaints;public ComplaintController(ComplaintRepository c){complaints=c;}
+ @PostMapping public ResponseEntity<?> create(@RequestBody CreateComplaint c,Authentication auth){if(c.title==null||c.title.isBlank()||c.description==null||c.description.isBlank()||c.category==null||c.category.isBlank())return ResponseEntity.badRequest().body(Map.of("error","Title, description, and category are required."));Complaint saved=complaints.save(new Complaint(c.title.trim(),c.description.trim(),c.category.trim(),auth.getName()));return ResponseEntity.status(HttpStatus.CREATED).body(saved);}
+ @GetMapping public List<Complaint> mine(Authentication auth){return complaints.findByCitizenUsernameOrderByCreatedAtDesc(auth.getName());}
+ @GetMapping("/{id}") public ResponseEntity<?> getMine(@PathVariable Long id,Authentication auth){return complaints.findById(id).filter(c->c.getCitizenUsername().equals(auth.getName())).<ResponseEntity<?>>map(ResponseEntity::ok).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error","Complaint not found")));}
+ public static class CreateComplaint{public String title;public String description;public String category;}}
